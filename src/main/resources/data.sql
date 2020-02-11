@@ -1,5 +1,11 @@
 INSERT INTO 
-	TBL_EMPLOYEES (first_name, last_name, email) 
+	TBL_USERS (first_name, last_name, email) 
 VALUES
-  	('Lokesh', 'Gupta', 'yuf@gmail.com'),
-  	('John', 'Doe', 'xyz@email.com');
+  	('mike', 'nick', 'mike@gmail.com'),
+  	('John', 'Doe', 'john@email.com');
+INSERT INTO 
+	TBL_IMAGES (file_name, file_path, user_id) 
+VALUES
+  	('logo', '/opt/logo.png', 1),
+  	('blog', '/opt/blog.jpeg', 2);  	
+  	

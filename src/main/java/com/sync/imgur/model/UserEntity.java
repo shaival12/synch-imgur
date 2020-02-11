@@ -1,15 +1,21 @@
 package com.sync.imgur.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="TBL_EMPLOYEES")
-public class EmployeeEntity {
+@Table(name="TBL_USERS")
+public class UserEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,6 +29,10 @@ public class EmployeeEntity {
     
     @Column(name="email", nullable=false, length=200)
     private String email;
+    
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "user_id")
+    private List<ImageEntity> imageEntityList = new ArrayList<ImageEntity>();
     
     public Long getId() {
 		return id;
@@ -55,8 +65,16 @@ public class EmployeeEntity {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+	
+	public List<ImageEntity> getImageEntityList() {
+		return imageEntityList;
+	}
 
-    @Override
+	public void setImageEntityList(List<ImageEntity> imageEntityList) {
+		this.imageEntityList = imageEntityList;
+	}
+
+	@Override
     public String toString() {
         return "EmployeeEntity [id=" + id + ", firstName=" + firstName + 
                 ", lastName=" + lastName + ", email=" + email   + "]";

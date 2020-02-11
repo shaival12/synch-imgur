@@ -3,10 +3,10 @@ package com.sync.imgur.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.sync.imgur.model.EmployeeEntity;
+import com.sync.imgur.model.UserEntity;
  
 @Repository
-public interface EmployeeRepository
-        extends JpaRepository<EmployeeEntity, Long> {
+public interface UserRepository
+        extends JpaRepository<UserEntity, Long> {
  
 }

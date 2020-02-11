@@ -14,42 +14,42 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sync.imgur.exception.RecordNotFoundException;
-import com.sync.imgur.model.EmployeeEntity;
-import com.sync.imgur.service.EmployeeService;
+import com.sync.imgur.model.UserEntity;
+import com.sync.imgur.service.UserService;
  
 @RestController
-@RequestMapping("/employees")
-public class EmployeeController
+@RequestMapping("/users")
+public class UserController
 {
     @Autowired
-    EmployeeService service;
+    UserService service;
  
     @GetMapping
-    public ResponseEntity<List<EmployeeEntity>> getAllEmployees() {
-        List<EmployeeEntity> list = service.getAllEmployees();
+    public ResponseEntity<List<UserEntity>> getAllUsers() {
+        List<UserEntity> list = service.getAll();
  
-        return new ResponseEntity<List<EmployeeEntity>>(list, new HttpHeaders(), HttpStatus.OK);
+        return new ResponseEntity<List<UserEntity>>(list, new HttpHeaders(), HttpStatus.OK);
     }
  
     @GetMapping("/{id}")
-    public ResponseEntity<EmployeeEntity> getEmployeeById(@PathVariable("id") Long id)
+    public ResponseEntity<UserEntity> getUserById(@PathVariable("id") Long id)
                                                     throws RecordNotFoundException {
-        EmployeeEntity entity = service.getEmployeeById(id);
+        UserEntity entity = service.getUserById(id);
  
-        return new ResponseEntity<EmployeeEntity>(entity, new HttpHeaders(), HttpStatus.OK);
+        return new ResponseEntity<UserEntity>(entity, new HttpHeaders(), HttpStatus.OK);
     }
  
     @PostMapping
-    public ResponseEntity<EmployeeEntity> createOrUpdateEmployee(EmployeeEntity employee)
+    public ResponseEntity<UserEntity> createOrUpdateUser(UserEntity user)
                                                     throws RecordNotFoundException {
-        EmployeeEntity updated = service.createOrUpdateEmployee(employee);
-        return new ResponseEntity<EmployeeEntity>(updated, new HttpHeaders(), HttpStatus.OK);
+        UserEntity updated = service.createOrUpdate(user);
+        return new ResponseEntity<UserEntity>(updated, new HttpHeaders(), HttpStatus.OK);
     }
  
     @DeleteMapping("/{id}")
     public HttpStatus deleteEmployeeById(@PathVariable("id") Long id)
                                                     throws RecordNotFoundException {
-        service.deleteEmployeeById(id);
+        service.deleteById(id);
         return HttpStatus.FORBIDDEN;
     }
  
