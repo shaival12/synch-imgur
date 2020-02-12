@@ -10,11 +10,13 @@ import org.springframework.stereotype.Service;
 import com.sync.imgur.exception.RecordNotFoundException;
 import com.sync.imgur.model.ImageEntity;
 import com.sync.imgur.repository.ImageRepository;
+import com.sync.imgur.util.ImgurUtil;
  
 @Service
 public class ImageService {
      
-    @Autowired
+    private static final String STATUS_SUCCESS = "SUCCESS";
+	@Autowired
     ImageRepository repository;
      
     /**
@@ -56,7 +58,7 @@ public class ImageService {
      * @return
      * @throws RecordNotFoundException
      */
-    public ImageEntity uploadImage(ImageEntity entity) throws RecordNotFoundException
+    public ImageEntity save(ImageEntity entity)  
     {
         Optional<ImageEntity> image = repository.findById(entity.getId());
          
@@ -91,7 +93,17 @@ public class ImageService {
          
         if(image.isPresent())
         {
-            repository.deleteById(id);
+        	try {
+        		//delete from Imgur, if successful then delete from DB
+				String status = ImgurUtil.deleteImage(image.get().getDeleteHashCode());
+				if(status.contentEquals(STATUS_SUCCESS)) {
+				  repository.deleteById(id);
+				}
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+            
         } else {
             throw new RecordNotFoundException("No Image record exist for given id");
         }

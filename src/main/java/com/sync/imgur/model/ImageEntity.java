@@ -21,6 +21,12 @@ public class ImageEntity {
     @Column(name="file_path")
     private String filePath;
     
+    @Column(name="img_type")
+    private String imgType;
+    
+    @Column(name="delete_hash_code")
+    private String deleteHashCode;
+    
     @Column(name="user_id")
     private Long userId;
     
@@ -55,5 +61,22 @@ public class ImageEntity {
 	public void setUserId(Long userId) {
 		this.userId = userId;
 	}
+
+	public String getDeleteHashCode() {
+		return deleteHashCode;
+	}
+
+	public void setDeleteHashCode(String deleteHashCode) {
+		this.deleteHashCode = deleteHashCode;
+	}
+
+	public String getImgType() {
+		return imgType;
+	}
+
+	public void setImgType(String imgType) {
+		this.imgType = imgType;
+	}
 	
+		
 }

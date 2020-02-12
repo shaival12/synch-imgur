@@ -11,7 +11,9 @@ DROP TABLE IF EXISTS TBL_IMAGES;
  
 CREATE TABLE TBL_IMAGES (
   id INT AUTO_INCREMENT  PRIMARY KEY,
-  file_name VARCHAR(250) NOT NULL,
-  file_path VARCHAR(250) NOT NULL,
-  user_id INT DEFAULT NULL
+  file_name VARCHAR(250),
+  file_path VARCHAR(250),
+  img_type VARCHAR(250),
+  delete_hash_code VARCHAR(100),
+  user_id INT
 );
