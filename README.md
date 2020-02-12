@@ -1,9 +1,11 @@
 # synch-imgur
 This is spring-boot application to access Imgur API to get, upload and delete images.
 
-1.ImageController
-   
-2.UserController
+ - ImageController
+      - Get Image by Id    v1/images/{id}
+      - Upload Image.      v1/images/upload/
+      - Delete Image by Id v1/images/{id}
+ - UserController
 
 
 # H2 DB schema :
