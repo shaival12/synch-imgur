@@ -21,6 +21,12 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
+    @Column(name="user_name")
+    private String userName;
+    
+    @Column(name="password")
+    private String password;
+    
     @Column(name="first_name")
     private String firstName;
     
@@ -29,6 +35,12 @@ public class UserEntity {
     
     @Column(name="email", nullable=false, length=200)
     private String email;
+    
+    @Column(name="active")
+    private boolean active;
+    
+    @Column(name="roles")
+    private String roles;
     
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "user_id")
@@ -79,4 +91,38 @@ public class UserEntity {
         return "EmployeeEntity [id=" + id + ", firstName=" + firstName + 
                 ", lastName=" + lastName + ", email=" + email   + "]";
     }
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+
+	public String getRoles() {
+		return roles;
+	}
+
+	public void setRoles(String roles) {
+		this.roles = roles;
+	}
+	
+	
 }

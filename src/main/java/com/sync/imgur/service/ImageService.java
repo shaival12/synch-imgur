@@ -16,6 +16,7 @@ import com.sync.imgur.util.ImgurUtil;
 public class ImageService {
      
     private static final String STATUS_SUCCESS = "SUCCESS";
+    
 	@Autowired
     ImageRepository repository;
      
@@ -75,9 +76,7 @@ public class ImageService {
         } else {
         	
         	//upload to Imgur and save to DB
-        	
             entity = repository.save(entity);
-             
             return entity;
         }
     }

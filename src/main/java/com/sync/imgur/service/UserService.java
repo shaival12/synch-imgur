@@ -10,12 +10,25 @@ import org.springframework.stereotype.Service;
 import com.sync.imgur.exception.RecordNotFoundException;
 import com.sync.imgur.model.UserEntity;
 import com.sync.imgur.repository.UserRepository;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
  
 @Service
-public class UserService {
+public class UserService implements UserDetailsService{
      
     @Autowired
     UserRepository repository;
+    
+    
+    @Override
+    public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
+        Optional<UserEntity> user = repository.findByUserName(userName);
+
+        user.orElseThrow(() -> new UsernameNotFoundException("Not found: " + userName));
+
+        return user.map(MyUserDetails::new).get();
+    }
      
     public List<UserEntity> getAll()
     {

@@ -1,8 +1,8 @@
 INSERT INTO 
-	TBL_USERS (first_name, last_name, email) 
+	TBL_USERS (use_name, password, first_name, last_name, email, active, roles) 
 VALUES
-  	('mike', 'nick', 'mike@gmail.com'),
-  	('John', 'Doe', 'john@email.com');
+  	('mike11','sw212dd22','mike', 'nick', 'mike@gmail.com',1,'admin'),
+  	('rocky123','de2d12121','rock', 'rock', 'rock@gmail.com',1,'user');
 INSERT INTO 
 	TBL_IMAGES (file_name, file_path, img_type, delete_hash_code, user_id) 
 VALUES
