@@ -2,9 +2,8 @@ package com.sync.imgur.web;
 
 import java.util.Base64;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -18,20 +17,68 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.sync.imgur.model.UserEntity;
 import com.sync.imgur.exception.RecordNotFoundException;
 import com.sync.imgur.model.ImageEntity;
-import com.sync.imgur.service.UserService;
+import com.sync.imgur.service.ImageService;
 import com.sync.imgur.util.ImgurUtil;
 import com.sync.imgur.util.ResponseObject;
-import com.sync.imgur.service.ImageService;
  
 @RestController
 @RequestMapping("/v1/images")
 public class ImageController
 {
+	private static final Logger LOGGER = Logger.getLogger(ImageController.class);
+	
     @Autowired
     ImageService service;
+    
+    /**
+     * upload file to imgur and save to Db
+     * @param file
+     * @param fileName
+     * @param userId
+     * @return
+     */
+     @PostMapping("/upload") 
+     public HttpStatus singleFileUpload(@RequestParam("file") MultipartFile file,
+     		                           @RequestParam("fileName") String fileName,
+     		                           @RequestParam("userId") Long userId ) {
+
+         if (file.isEmpty()) {
+             return HttpStatus.BAD_REQUEST;
+         }
+
+         try {
+
+             // convert bytes to base64
+             byte[] bytes = file.getBytes();
+             String base64String = Base64.getEncoder().encodeToString(bytes);
+             
+             // call util to upload to Imgur
+             ResponseObject responseObj =  ImgurUtil.uploadImage(base64String);
+             
+             //save to h2 DB 
+             if(responseObj!=null) {
+ 	            ImageEntity imageEntity = new ImageEntity();
+ 	            imageEntity.setFileName(fileName);
+ 	            imageEntity.setFilePath(responseObj.getLink());
+ 	            imageEntity.setDeleteHashCode(responseObj.getDeleteHashCode());
+ 	            imageEntity.setImgType(responseObj.getImgType());
+ 	            imageEntity.setUserId(userId);
+ 				service.save(imageEntity);
+ 				
+             }else {
+             	return HttpStatus.NOT_MODIFIED;
+             }
+
+         } catch (Exception e) {
+        	 LOGGER.error("File upload failed for "+e.getMessage());
+             return HttpStatus.EXPECTATION_FAILED;
+         }
+
+         return HttpStatus.OK;
+     }
+
     
     /**
      * get all images
@@ -84,53 +131,7 @@ public class ImageController
         return HttpStatus.FORBIDDEN;
     }
     
-   /**
-    * upload file to imgur and save to Db
-    * @param file
-    * @param fileName
-    * @param userId
-    * @return
-    */
-    @PostMapping("/upload") 
-    public HttpStatus singleFileUpload(@RequestParam("file") MultipartFile file,
-    		                           @RequestParam("fileName") String fileName,
-    		                           @RequestParam("userId") Long userId ) {
-
-        if (file.isEmpty()) {
-            //redirectAttributes.addFlashAttribute("message", "Please select a file to upload");
-            return HttpStatus.BAD_REQUEST;
-        }
-
-        try {
-
-            // convert bytes to base64
-            byte[] bytes = file.getBytes();
-            String base64String = Base64.getEncoder().encodeToString(bytes);
-            
-            // call util to upload to Imgur
-            ResponseObject responseObj =  ImgurUtil.uploadImage(base64String);
-            
-            //save to h2 DB 
-            if(responseObj!=null) {
-	            ImageEntity imageEntity = new ImageEntity();
-	            imageEntity.setFileName(fileName);
-	            imageEntity.setFilePath(responseObj.getLink());
-	            imageEntity.setDeleteHashCode(responseObj.getDeleteHashCode());
-	            imageEntity.setImgType(responseObj.getImgType());
-	            imageEntity.setUserId(userId);
-				service.save(imageEntity);
-				
-            }else {
-            	return HttpStatus.EXPECTATION_FAILED;
-            }
-
-        } catch (Exception e) {
-            return HttpStatus.EXPECTATION_FAILED;
-        }
-
-        return HttpStatus.OK;
-    }
- 
+    
     
  
 }

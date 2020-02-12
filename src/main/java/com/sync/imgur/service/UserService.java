@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sync.imgur.exception.RecordNotFoundException;
+import com.sync.imgur.model.MyUserDetails;
 import com.sync.imgur.model.UserEntity;
 import com.sync.imgur.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
