@@ -6,8 +6,9 @@ This is spring-boot application to access Imgur API to get, upload and delete im
 2.UserController
 
 
-H2 DB schema :
+# H2 DB schema :
 
+```shell
 DROP TABLE IF EXISTS TBL_USERS;
  
 CREATE TABLE TBL_USERS (
@@ -31,3 +32,6 @@ CREATE TABLE TBL_IMAGES (
   delete_hash_code VARCHAR(100),
   user_id INT
 );
+```
+
+
